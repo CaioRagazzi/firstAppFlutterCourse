@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './question.dart';
+import './quiz.dart';
+import './result.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,39 +20,36 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _questionIndex++;
     });
-    print('Answer chosen!');
   }
 
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      'What\'s your favorite colour?',
-      'What\'s your favorite animal?',
+    var _questions = [
+      {
+        'questionText': 'What\'s your favorite colour?',
+        'answers': ['Black', 'White', 'Pink', 'Red']
+      },
+      {
+        'questionText': 'What\'s your favorite animal?',
+        'answers': ['Lion', 'Snak', 'Cat', 'Dog']
+      },
+      {
+        'questionText': 'What\'s your favorite person?',
+        'answers': ['Caio', 'Caio', 'Caio', 'Caio']
+      }
     ];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('My first App!'),
         ),
-        body: Column(
-          children: <Widget>[
-            Question(questions.elementAt(_questionIndex)),
-            RaisedButton(
-              child: Text('Answer 1'),
-              onPressed: _answerQuestion,
-            ),
-            RaisedButton(
-              child: Text('Answer 2'),
-              onPressed: () => print('answer 2 chosen'),
-            ),
-            RaisedButton(
-              child: Text('Answer 3'),
-              onPressed: () {
-                print('answer 3 chosen');
-              },
-            ),
-          ],
-        ),
+        body: _questionIndex < _questions.length
+            ? Quiz(
+                answerQuestion: _answerQuestion,
+                questionIndex: _questionIndex,
+                questions: _questions,
+              )
+            : Result(),
       ),
     );
   }
